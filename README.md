@@ -32,8 +32,7 @@ vince **sempre** la lista PDF.
 4. Controlla i **crediti rimasti** in alto e la pagina **Rosa** per il riepilogo.
 
 ### Pulsanti visibilità
-- **Visualizza tutti** → mostra anche i giocatori già chiamati.
-- **Nascondi già chiamati** → li rimuove dalla vista.
+- **Nascondi Chiamati / Mostra Chiamati** → toggle: nasconde o mostra i giocatori già chiamati.
 
 ## 💾 Dove sono salvati i dati
 Lo stato (rosa + flag "chiamati") è salvato nel **`localStorage`** del browser.

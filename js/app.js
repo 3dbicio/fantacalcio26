@@ -2,7 +2,7 @@
  * PAGINA GIOCATORI — FANTACALCIO26
  * ================================
  * Elenco giocatori ordinati per ruolo (ordine asta) e poi per valore.
- * Controlli: "Visualizza tutti" / "Nascondi già chiamati".
+ * Controlli: toggle "Nascondi/Mostra Chiamati".
  * Azioni per giocatore: segna "già chiamato", aggiungi alla rosa (con prezzo).
  */
 
@@ -28,8 +28,7 @@
   const creditsEl = document.getElementById("credits-remaining");
   const spendableEl = document.getElementById("credits-spendable");
   const squadCountEl = document.getElementById("squad-count");
-  const btnShowAll = document.getElementById("btn-show-all");
-  const btnHideCalled = document.getElementById("btn-hide-called");
+  const btnToggleCalled = document.getElementById("btn-toggle-called");
   const btnReset = document.getElementById("btn-reset");
 
   // Modale acquisto
@@ -561,14 +560,8 @@
     });
   }
 
-  btnShowAll.addEventListener("click", () => {
-    hideCalled = false;
-    updateFilterButtons();
-    render();
-  });
-
-  btnHideCalled.addEventListener("click", () => {
-    hideCalled = true;
+  btnToggleCalled.addEventListener("click", () => {
+    hideCalled = !hideCalled;
     updateFilterButtons();
     render();
   });
@@ -583,8 +576,12 @@
   });
 
   function updateFilterButtons() {
-    btnShowAll.classList.toggle("active", !hideCalled);
-    btnHideCalled.classList.toggle("active", hideCalled);
+    // Il tasto mostra l'AZIONE che farà il click:
+    //   chiamati visibili  → "Nascondi Chiamati" (clicca per nascondere)
+    //   chiamati nascosti  → "Mostra Chiamati"  (clicca per mostrare)
+    btnToggleCalled.textContent = hideCalled ? "Mostra Chiamati" : "Nascondi Chiamati";
+    btnToggleCalled.classList.toggle("active", !hideCalled);
+    btnToggleCalled.setAttribute("aria-pressed", String(hideCalled));
   }
 
   // --- Init ---
