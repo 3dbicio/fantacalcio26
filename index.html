@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Giocatori · Fantacalcio26</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <div>
+          <h1>Fantacalcio26</h1>
+          <p class="brand-sub">Squadra <strong>visitors</strong></p>
+        </div>
+      </div>
+      <nav class="topnav">
+        <a href="index.html" class="nav-link active">Giocatori</a>
+        <a href="squad.html" class="nav-link">Rosa</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Pannello crediti + rosa -->
+    <section class="status-panel">
+      <div class="status-credits">
+        <span class="status-label">Crediti rimasti</span>
+        <span class="status-value" id="credits-remaining">300</span>
+        <span class="status-total">/ 300</span>
+      </div>
+      <div class="status-squad">
+        <span class="status-label">Rosa</span>
+        <span class="status-value" id="squad-count">0</span>
+        <span class="status-total">/ 31</span>
+      </div>
+      <div class="status-spend">
+        <span class="status-label">Disponibili da spendere</span>
+        <span class="status-value" id="credits-spendable">300</span>
+        <span class="status-total">min. 1/ruolo (3° portiere 0)</span>
+      </div>
+      <div class="status-composition">
+        <span class="comp" id="count-PORTIERI" data-role="PORTIERI">0/3</span>
+        <span class="comp" id="count-DIFENSORI" data-role="DIFENSORI">0/10</span>
+        <span class="comp" id="count-CENTROCAMPISTI" data-role="CENTROCAMPISTI">0/10</span>
+        <span class="comp" id="count-ATTACCANTI" data-role="ATTACCANTI">0/8</span>
+      </div>
+    </section>
+
+    <!-- Ricerca -->
+    <div class="search-wrap">
+      <input type="search" id="player-search" class="search-input" placeholder="Cerca giocatore in questa scheda…" autocomplete="off" />
+    </div>
+
+    <!-- Controlli visibilità + ordinamento -->
+    <div class="toolbar">
+      <div class="filter-group" role="group" aria-label="Filtro visibilità">
+        <button id="btn-show-all" class="btn filter-btn active">Visualizza tutti</button>
+        <button id="btn-hide-called" class="btn filter-btn">Nascondi già chiamati</button>
+        <button id="btn-only-fav" class="btn filter-btn">Solo preferiti ★</button>
+      </div>
+      <div class="sort-group" role="group" aria-label="Ordinamento">
+        <button id="sort-name" class="btn sort-btn">Per nome</button>
+        <button id="sort-spend" class="btn sort-btn active">Per spesa max</button>
+        <button id="sort-tit" class="btn sort-btn">Per titolarità</button>
+        <button id="sort-stars" class="btn sort-btn">Per stelline ★</button>
+      </div>
+      <button id="btn-reset" class="btn btn-danger">Reset</button>
+    </div>
+
+    <!-- Schede per ruolo -->
+    <div class="tabs" id="role-tabs" role="tablist" aria-label="Ruoli">
+      <button class="tab active" data-role="PORTIERI" role="tab">Portieri <span class="tab-count" id="tab-count-PORTIERI"></span></button>
+      <button class="tab" data-role="DIFENSORI" role="tab">Difensori <span class="tab-count" id="tab-count-DIFENSORI"></span></button>
+      <button class="tab" data-role="CENTROCAMPISTI" role="tab">Centrocampisti <span class="tab-count" id="tab-count-CENTROCAMPISTI"></span></button>
+      <button class="tab" data-role="ATTACCANTI" role="tab">Attaccanti <span class="tab-count" id="tab-count-ATTACCANTI"></span></button>
+    </div>
+
+    <!-- Elenco giocatori -->
+    <div id="players-list" class="players-list"></div>
+  </main>
+
+  <!-- Modale acquisto -->
+  <div id="buy-modal" class="modal" hidden>
+    <div class="modal-backdrop" data-close="1"></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="buy-title">
+      <h2 id="buy-title" class="modal-title">Acquista giocatore</h2>
+      <p class="modal-player" id="buy-player-name">—</p>
+      <p class="modal-hint" id="buy-hint"></p>
+
+      <label class="field-label" for="buy-slider">Crediti da pagare</label>
+      <div class="slider-row">
+        <input type="range" id="buy-slider" min="0" max="250" step="1" value="1" />
+        <input type="number" id="buy-number" class="buy-number" min="0" max="250" step="1" value="1" />
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn" id="buy-cancel" data-close="1">Annulla</button>
+        <button class="btn btn-squad" id="buy-confirm">Acquista</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>⚠️ Ruoli presi sempre dalla lista ufficiale (PDF). Mai da altre fonti.</p>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/players.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

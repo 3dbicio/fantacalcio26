@@ -1,0 +1,12 @@
+{
+  "name": "fantacalcio26",
+  "version": "1.0.0",
+  "description": "App mobile-first per gestire l'asta Fantacalcio 2026 (squadra visitors, 300 crediti)",
+  "private": true,
+  "scripts": {
+    "start": "npx --yes http-server -p 8080 -c-1 .",
+    "dev": "npx --yes http-server -p 8080 -c-1 ."
+  },
+  "keywords": ["fantacalcio", "asta", "fantasy"],
+  "license": "MIT"
+}
