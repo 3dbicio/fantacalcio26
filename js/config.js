@@ -29,7 +29,14 @@ const CONFIG = {
   // Protezione con password (da togliere in futuro: basta mettere enabled=false)
   auth: {
     enabled: true,
-    password: "3dbicio",
+    password: "Ft26!xK9#mQz",
+  },
+
+  // Cloud sync (jsonbin.io) — per salvare le modifiche su tutti i dispositivi
+  cloud: {
+    enabled: true,
+    masterKey: "$2a$10$oR3Ad8nz2TF.UtQMshtr4eMWjZf98A9HfzlsSMIAsKt5ffM4UvjtK",
+    binId: "6a96ec1ada38895dfe2b938b",
   },
 };
 

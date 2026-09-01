@@ -282,7 +282,9 @@
       <article class="player-card ${p.called ? "called" : ""}" data-id="${p.id}">
         <div class="player-head">
           <div class="player-id">
-            <h3 class="player-name">${esc(surname)}${firstname ? ` <span class="player-firstname">${esc(firstname)}</span>` : ""} <span class="player-age">${p.age ?? ""} anni</span>${altRoleBadge}</h3>
+            <h3 class="player-name">${esc(surname)}${firstname ? ` <span class="player-firstname">${esc(firstname)}</span>` : ""} <span class="player-age">${p.age ?? ""} anni</span>${altRoleBadge}
+              <button type="button" class="note-btn ${p.note ? "has-note" : ""}" data-action="note" title="Note" aria-label="Note">i</button>
+            </h3>
             <p class="player-team">${esc(p.team)}</p>
           </div>
           <div class="player-values">
@@ -364,6 +366,56 @@
     document.body.style.overflow = "";
   }
 
+  // --- Modale note ---
+  const noteModal = document.getElementById("note-modal");
+  const notePlayerName = document.getElementById("note-player-name");
+  const noteTextarea = document.getElementById("note-textarea");
+  const noteSave = document.getElementById("note-save");
+  const noteClear = document.getElementById("note-clear");
+  let noteTargetId = null;
+
+  function openNoteModal(playerId) {
+    const player = PLAYERS.find((p) => p.id === playerId);
+    if (!player) return;
+    noteTargetId = playerId;
+    notePlayerName.textContent = `${player.name} · ${player.team}`;
+    noteTextarea.value = Storage.getNote(playerId);
+    noteModal.hidden = false;
+    document.body.style.overflow = "hidden";
+    setTimeout(() => noteTextarea.focus(), 50);
+  }
+
+  function closeNoteModal() {
+    noteModal.hidden = true;
+    noteTargetId = null;
+    document.body.style.overflow = "";
+  }
+
+  function saveNote() {
+    if (!noteTargetId) return;
+    Storage.setNote(noteTargetId, noteTextarea.value);
+    closeNoteModal();
+    render();
+  }
+
+  function clearNote() {
+    if (!noteTargetId) return;
+    Storage.setNote(noteTargetId, "");
+    closeNoteModal();
+    render();
+  }
+
+  if (noteSave) noteSave.addEventListener("click", saveNote);
+  if (noteClear) noteClear.addEventListener("click", clearNote);
+  if (noteModal) {
+    noteModal.addEventListener("click", (e) => {
+      if (e.target.dataset.close === "1") closeNoteModal();
+    });
+  }
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && noteModal && !noteModal.hidden) closeNoteModal();
+  });
+
   function confirmBuy() {
     if (!buyTargetId) return;
     const player = PLAYERS.find((p) => p.id === buyTargetId);
@@ -432,6 +484,8 @@
       render();
     } else if (action === "add-squad") {
       openBuyModal(id);
+    } else if (action === "note") {
+      openNoteModal(id);
     }
   });
 
@@ -534,8 +588,15 @@
   }
 
   // --- Init ---
-  updateFilterButtons();
-  updateTabs();
-  updateSortButtons();
-  render();
+  async function init() {
+    if (typeof Cloud !== "undefined") {
+      await Cloud.init();
+      state = Storage.load(); // ricarica lo stato dal cloud
+    }
+    updateFilterButtons();
+    updateTabs();
+    updateSortButtons();
+    render();
+  }
+  init();
 })();

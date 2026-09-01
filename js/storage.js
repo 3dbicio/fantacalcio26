@@ -1,49 +1,42 @@
 /**
  * STORAGE — FANTACALCIO26
  * =======================
- * Persistenza locale (localStorage) dello stato dell'asta:
+ * Stato dell'asta, sincronizzato con il cloud (jsonbin.io) e con
+ * cache locale (localStorage):
  *  - players:  stato di ogni giocatore (called, inSquad, paidPrice)
  *  - squad:    la mia rosa (array di id giocatore)
+ *  - ratings:  stelline personali (0–5)
+ *  - notes:    note libere per giocatore (es. "rigorista 1")
  *
- * I dati restano sul dispositivo (telefono), ideali per un'asta personale
- * e per un hosting statico gratuito senza backend.
+ * Le modifiche sono visibili da qualsiasi dispositivo (stesso link).
  */
 
-const STORAGE_KEY = "fantacalcio26_state_v1";
-
 const Storage = {
-  /** Carica lo stato salvato (o crea lo stato iniziale). */
+  /** Carica lo stato (dal cloud via Cloud.getState, fallback locale). */
   load() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        return {
-          players: parsed.players || {},
-          squad: parsed.squad || [],
-          ratings: parsed.ratings || {},
-        };
-      }
-    } catch (e) {
-      console.warn("Impossibile leggere lo stato salvato:", e);
-    }
-    return { players: {}, squad: [], ratings: {} };
+    if (typeof Cloud !== "undefined") return Cloud.getState();
+    return { players: {}, squad: [], ratings: {}, notes: {} };
   },
 
-  /** Salva lo stato corrente. */
+  /** Salva lo stato (cloud + cache locale). */
   save(state) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    if (typeof Cloud !== "undefined") {
+      Cloud.saveDebounced(state);
+    } else {
+      localStorage.setItem("fantacalcio26_state_v1", JSON.stringify(state));
+    }
   },
 
   /** Stato iniziale vuoto. */
   initialState() {
-    return { players: {}, squad: [], ratings: {} };
+    return { players: {}, squad: [], ratings: {}, notes: {} };
   },
 
-  /** Reset completo (cancella rosa, flag e stelline). */
+  /** Reset completo (cancella rosa, flag, stelline e note). */
   reset() {
-    localStorage.removeItem(STORAGE_KEY);
-    return this.initialState();
+    const empty = this.initialState();
+    this.save(empty);
+    return empty;
   },
 
   /** Imposta la stellina (rating 0–5) di un giocatore. */
@@ -66,9 +59,27 @@ const Storage = {
     return state.ratings[playerId] || 0;
   },
 
+  /** Imposta la nota libera di un giocatore (stringa, "" per cancellare). */
+  setNote(playerId, text) {
+    const state = this.load();
+    const t = String(text == null ? "" : text).trim();
+    if (t === "") {
+      delete state.notes[playerId];
+    } else {
+      state.notes[playerId] = t;
+    }
+    this.save(state);
+  },
+
+  /** Ritorna la nota di un giocatore ("" se assente). */
+  getNote(playerId) {
+    const state = this.load();
+    return state.notes[playerId] || "";
+  },
+
   /**
    * Ritorna lo stato "arricchito": per ogni giocatore della lista PLAYERS
-   * aggiunge i campi called / inSquad / paidPrice dallo stato salvato.
+   * aggiunge i campi called / inSquad / paidPrice / rating / note.
    */
   getEnrichedPlayers() {
     const state = this.load();
@@ -80,6 +91,7 @@ const Storage = {
         inSquad: state.squad.includes(p.id),
         paidPrice: st.paidPrice ?? null,
         rating: state.ratings[p.id] || 0,
+        note: state.notes[p.id] || "",
       };
     });
   },

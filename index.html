@@ -83,6 +83,21 @@
     <div id="players-list" class="players-list"></div>
   </main>
 
+  <!-- Modale note -->
+  <div id="note-modal" class="modal" hidden>
+    <div class="modal-backdrop" data-close="1"></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="note-title">
+      <h2 id="note-title" class="modal-title">Note giocatore</h2>
+      <p class="modal-player" id="note-player-name">—</p>
+      <label class="field-label" for="note-textarea">Note (es. rigorista 1, infortunato, ecc.)</label>
+      <textarea id="note-textarea" class="note-textarea" rows="4" placeholder="Scrivi qui le note…"></textarea>
+      <div class="modal-actions">
+        <button class="btn" id="note-clear" data-close="1">Svuota</button>
+        <button class="btn btn-squad" id="note-save">Salva</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Modale acquisto -->
   <div id="buy-modal" class="modal" hidden>
     <div class="modal-backdrop" data-close="1"></div>
@@ -109,6 +124,7 @@
   </footer>
 
   <script src="js/config.js"></script>
+  <script src="js/cloud.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/players.js"></script>
   <script src="js/storage.js"></script>

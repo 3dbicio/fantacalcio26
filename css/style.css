@@ -367,6 +367,47 @@ html, body {
 .auth-btn:hover { filter: brightness(1.08); }
 .auth-error { margin: 12px 0 0; font-size: 0.82rem; color: #ef4444; }
 
+/* ---------- Icona note (i) ---------- */
+.note-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-left: 6px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border, #263042);
+  background: #1e293b;
+  color: var(--text-dim, #9aa4b2);
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-style: italic;
+  font-family: Georgia, serif;
+  cursor: pointer;
+  vertical-align: middle;
+  -webkit-tap-highlight-color: transparent;
+}
+.note-btn:hover { border-color: var(--accent, #3b82f6); color: #fff; }
+.note-btn.has-note {
+  background: var(--accent, #3b82f6);
+  border-color: var(--accent, #3b82f6);
+  color: #fff;
+}
+.note-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  border-radius: 10px;
+  border: 1px solid var(--border, #263042);
+  background: #0b1220;
+  color: #fff;
+  resize: vertical;
+  min-height: 90px;
+}
+.note-textarea:focus { outline: none; border-color: var(--accent, #3b82f6); }
+
 /* ---------- Stelline (preferiti 0-5) ---------- */
 .stars-row {
   display: flex;
