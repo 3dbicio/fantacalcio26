@@ -33,6 +33,13 @@ const CONFIG = {
   },
 
   // Cloud sync (jsonbin.io) — per salvare le modifiche su tutti i dispositivi
+  //
+  // ⚠️ SICUREZZA: la Master Key è leggibile da chiunque (sito statico).
+  //    Per ruotarla:
+  //      1. jsonbin.io → Settings → Regenerate Master Key
+  //      2. Esegui:  .\rotate-key.ps1 "NUOVA_KEY"
+  //    La vecchia key smette di funzionare immediatamente.
+  //    ⚠️ La vecchia key resta nella git history (non rimovibile).
   cloud: {
     enabled: true,
     masterKey: "$2a$10$oR3Ad8nz2TF.UtQMshtr4eMWjZf98A9HfzlsSMIAsKt5ffM4UvjtK",
